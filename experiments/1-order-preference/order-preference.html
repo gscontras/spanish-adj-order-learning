@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <title>Corpus-based faultless disagreement</title>
+    <title>Learning adjective ordering in English</title>
 
     <!--JS-->
 
@@ -20,11 +20,6 @@
     <script src="../_shared/js/mmturkey.js "></script>
     <script src="../_shared/js/browserCheck.js"></script>
     <script src="../_shared/js/utils.js"></script>
-    <!-- if you want to draw cute creatures (depends on raphael): -->
-    <!-- <script src="../_shared/js/ecosystem.js"></script> -->
-
-    <!-- experiment specific helper functions -->
-    <!-- <script src="js/local-utils.js"></script> -->
 
     <!--CSS-->
     <link href="../_shared/full-projects/jquery-ui/jquery-ui.min.css" rel="stylesheet" type="text/css"/>
@@ -53,7 +48,7 @@
 
   <div class="slide" id="i0" >
     <img src="../_shared/images/meaningLab.png" alt="UCI meaning lab" id="meaningLabLogo"></img>
-    <p id="cocolab">Stanford CoCoLab</p>
+    <p id="cocolab">UCI meaning lab</p>
     <p id="instruct-text">This HIT involves interpreting sentences of English. The task should take about six minutes. Please pay attention. Thanks!</p>
     <button id="start_button" type="button">Start Experiment</button>
     <p id="legal">Legal information: By answering the following questions, you are participating in a study being performed by cognitive scientists at the University of California, Irvine. If you have questions about this research, please contact Greg Scontras at <a href="mailto://g.scontras@uci.edu">g.scontras@uci.edu</a>. You must be  at least 18 years old to participate. Your participation in this research is voluntary. You may decline to answer any or all of the following questions. You may decline further participation, at any time, without adverse consequences. Your anonymity is assured; the researchers who have requested your participation will not receive any personal information about you.</p>
@@ -71,28 +66,11 @@
 
   <p class="name_said"></p>
 
-    <!-- <p>Consider the following situation:</p> -->
-
-<!--    <p><span class = "woman">{{}}</span> sold a <span class="noun">{{}}</span> in her store.</p>
-
-    <p><span class="man1">{{}}</span> entered <span class = "woman">{{}}</span>'s store, noticed the <span class="noun">{{}}</span>, and said:</p>
-    -->
-    <!-- <p><span class="man1">{{}}</span> and <span class="man2">{{}}</span> see the same <span class="noun">{{}}</span>.</p> 
-    <p><span class="man1">{{}}</span> says: <b><span class="utterance1">{{}}</span></b></p>
-
-    <p><span class="man2">{{}}</span> responds: <b><span class="utterance2">{{}}</span></b></p> -->
-
-<!--     <p>Do the statements make sense?</p>
-    <label><input type="radio"  name="sense" value="Yes"/>Yes</label>
-    <label><input type="radio"  name="sense" value="No"/>No</label>
-    </br></br>
- -->
     <br>
 
     <p>Which description of the <span class="noun">{{}}</span> sounds more natural?</p>
 
     <table id="multi_slider_table" class="slider_table">
-<!--      <tr><td class="left">No, somebody must be wrong.</td><td class="right">Yes, it's a matter of opinion.</td></tr> -->
       <tr><td><span class="low">{{}}</span></td><td>
       <div id="slider0" class="slider"></div>
       </td><td><span class="high">{{}}</span></td></tr>
