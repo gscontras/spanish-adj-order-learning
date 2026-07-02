@@ -3,8 +3,9 @@
 
 
 function make_slides(f) {
-  var   slides = {};
+  var   slides = {}; //Create an empty list of experiment slides.
 
+  //Intro slide: starts the timer
   slides.i0 = slide({
      name : "i0",
      start: function() {
@@ -12,24 +13,30 @@ function make_slides(f) {
      }
   });
 
+  //Instructions slide: moves to the next slide when Continue is clicked.
   slides.instructions1 = slide({
     name : "instructions1",
     start: function() {
-      $(".instruction_condition").html("Between subject intruction manipulation: "+ exp.instruction);
+      $(".instruction_condition").html("Between subject instruction manipulation: "+ exp.instruction);
     }, 
     button : function() {
-      exp.go(); //use exp.go() if and only if there is no "present" data.
+      exp.go(); //use exp.go() if and only if there is no "present" data. - Meaning "Go to the next slide."
     }
   });
 
+  //Main rating task slide
   slides.multi_slider = slide({
     name : "multi_slider",
+
+    //Present stimuli in random order. The stimuli come from corpus.js
     present : _.shuffle(stimuli),
+
+    //For each trial, fill in the noun and adjective orders
     present_handle : function(stim) {
       $(".err").hide();
       this.init_sliders();      
       exp.sliderPost = null;
-      this.stim = stim; //FRED: allows you to access stim in helpers
+      this.stim = stim;
 
 
       $(".noun").html(stim.Noun);
@@ -42,6 +49,7 @@ function make_slides(f) {
 
     },
 
+    //Continue only if the participant moved the slider
     button : function() {
     	console.log(exp.sliderPost);
       if (exp.sliderPost != null) {
@@ -52,11 +60,14 @@ function make_slides(f) {
       }
     },
 
+    //Create slider and temporarily store its current value
     init_sliders : function() {
       utils.make_slider("#slider0", function(event, ui) {
         exp.sliderPost = ui.value;
       });
     },
+
+    ////Save the slider response and the words shown on this trial
     log_responses : function() {
         exp.data_trials.push({
           "response" : exp.sliderPost,
@@ -71,6 +82,7 @@ function make_slides(f) {
     },
   });
 
+  //Demographic information slide
   slides.subj_info =  slide({
     name : "subj_info",
     submit : function(e){
@@ -87,6 +99,7 @@ function make_slides(f) {
     }
   });
 
+  //Final slide: collect and submit data
   slides.thanks = slide({
     name : "thanks",
     start : function() {
@@ -109,7 +122,11 @@ function make_slides(f) {
 function init() {
   exp.trials = [];
   exp.catch_trials = [];
+
+  //Randomly choose one of two instruction conditions
   exp.instruction = _.sample(["instruction1","instruction2"]);
+  
+  //Save browser and screen info
   exp.system = {
       Browser : BrowserDetect.browser,
       OS : BrowserDetect.OS,
@@ -118,19 +135,22 @@ function init() {
       screenW: screen.width,
       screenUW: exp.width
     };
-  //blocks of the experiment:
+
+  //Order of the experiment slides:
   exp.structure=["i0", "instructions1",'multi_slider', 'subj_info', 'thanks'];
   
   exp.data_trials = [];
-  //make corresponding slides:
+  
+  //Create the slides defined above:
   exp.slides = make_slides(exp);
 
+  //Calculate total experiment length for progress bar:
   exp.nQs = utils.get_exp_length(); //this does not work if there are stacks of stims (but does work for an experiment with this structure)
                     //relies on structure and slides being defined
 
   $('.slide').hide(); //hide everything
 
-  //make sure turkers have accepted HIT (or you're not in mturk)
+  //Start button behavior??
   $("#start_button").click(function() {
     if (turk.previewMode) {
       $("#mustaccept").show();
