@@ -13,6 +13,18 @@ function make_slides(f) {
      }
   });
 
+  slides.lesson_video = slide({
+     name : "lesson_video",
+     start: function() {
+      // $(".movie").html("trad-movie.mp4");
+      document.getElementById("video_player").src = "expt-files/" + exp.video_condition + "-movie.mp4"
+     },
+     button : function() {
+      exp.go(); //use exp.go() if and only if there is no "present" data. - Meaning "Go to the next slide."
+    }
+  });
+
+
   //Instructions slide: moves to the next slide when Continue is clicked.
   slides.instructions1 = slide({
     name : "instructions1",
@@ -137,12 +149,15 @@ function init() {
     };
 
   //Order of the experiment slides:
-  exp.structure=["i0", "instructions1",'multi_slider', 'subj_info', 'thanks'];
+  exp.structure=["i0", "lesson_video", "instructions1",'multi_slider', 'subj_info', 'thanks'];
   
   exp.data_trials = [];
   
   //Create the slides defined above:
   exp.slides = make_slides(exp);
+
+  //between-subject factor
+  exp.video_condition = _.sample(["subj", "trad"]);
 
   //Calculate total experiment length for progress bar:
   exp.nQs = utils.get_exp_length(); //this does not work if there are stacks of stims (but does work for an experiment with this structure)
