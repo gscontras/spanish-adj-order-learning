@@ -250,46 +250,62 @@
 
 </div>
 
-  <!-- Intro slide: first page participants see -->
-  <div class="slide" id="i0" >
-    <img src="../_shared/images/meaningLab.png" alt="UCI meaning lab" id="meaningLabLogo"></img>
-    <p id="cocolab">UCI meaning lab</p>
-    <p id="instruct-text">This HIT involves interpreting sentences of English. The task should take about six minutes. Please pay attention. Thanks!</p>
-    <button id="start_button" type="button">Start Experiment</button>
-    <p id="legal">Legal information: By answering the following questions, you are participating in a study being performed by cognitive scientists at the University of California, Irvine. If you have questions about this research, please contact Greg Scontras at <a href="mailto://g.scontras@uci.edu">g.scontras@uci.edu</a>. You must be  at least 18 years old to participate. Your participation in this research is voluntary. You may decline to answer any or all of the following questions. You may decline further participation, at any time, without adverse consequences. Your anonymity is assured; the researchers who have requested your participation will not receive any personal information about you.</p>
-  </div>
+  <!-- Intro slide -->
+<div class="slide" id="i0" >
+  <img src="../_shared/images/meaningLab.png" alt="UCI meaning lab" id="meaningLabLogo"></img>
+  <p id="cocolab">UCI meaning lab</p>
+  <p class="intro_heading">En este estudio:</p>
+
+<ol class="intro_list">
+  <li>
+    Vas a ver un video breve sobre cómo se ordenan los adjetivos en inglés.
+    El video es en inglés.
+  </li>
+  <li>
+    Luego, vas a completar una tarea con frases cortas en inglés en base al contenido del video.
+  </li>
+</ol>
+
+<p class="intro_centered">La actividad te llevará aproximadamente 15 minutos.</p>
+<p class="intro_centered">Por favor, prestá atención.</p>
+<p class="intro_centered">¡Podés tomar notas!</p>
+
+<button id="start_button" type="button">Comenzar</button>
+</div>
 
   <!-- Lesson video slide -->
 <div class="slide" id="lesson_video">
-  <h3>Lesson</h3>
+  <h3>Lección</h3>
 
-  <p>Please watch the full video before continuing.</p>
+  <p>Por favor, mirá el video completo antes de continuar.</p>
 
   <video id="video_player" width="700" playsinline>
-    Your browser does not support the video tag.
+    Tu navegador no permite reproducir este video.
   </video>
 
   <br><br>
 
-  <button id="play_video_button" type="button">Play video</button>
+  <button id="play_video_button" type="button">Reproducir video</button>
 
   <button id="video_continue_button" onclick="_s.button()" style="display:none;">
-    Continue
+    Continuar
   </button>
 
   <div id="video_err" class="err">
-    Please watch the full video before continuing.
+    Por favor, mirá el video completo antes de continuar.
   </div>
 </div>
 
   <!-- Instructions slide -->
-  <div class="slide" id="instructions1">
-    <h3>Instructions</h3>
-    <p> You will see 26 pairs of short object descriptions.<br>
-    Your task is to decide which description sounds better.</p>
-    <!-- <p class="instruction_condition">{{}}</p> -->
-    <button onclick="_s.button()">Continue</button>
-  </div>
+<div class="slide" id="instructions1">
+  <h3>Instrucciones</h3>
+  <p>
+    Vas a ver 26 pares de frases cortas en inglés.<br>
+    En cada caso, tu tarea es decidir cuál frase suena más natural en inglés en base a la explicación del video.
+  </p>
+  <!-- <p class="instruction_condition">{{}}</p> -->
+  <button onclick="_s.button()">Continuar</button>
+</div>
 
   <!-- Main rating task slide: noun and adjective choices are filled in by JavaScript -->
   <div class="slide" id="multi_slider">
@@ -298,7 +314,7 @@
 
     <br>
 
-    <p>Which description of the <span class="noun">{{}}</span> sounds more natural?</p>
+    <p>¿Cuál de estas dos frases con la palabra <span class="noun">{{}}</span> suena más natural en inglés?</p>
 
     <table id="multi_slider_table" class="slider_table">
       <tr><td><span class="low">{{}}</span></td><td>
@@ -306,70 +322,107 @@
       </td><td><span class="high">{{}}</span></td></tr>
     </table>
 
-    <p>Adjust the slider to indicate your preference.</p><br>
+    <p>Deslizá el control de la barra para indicar tu preferencia.</p><br>
 
-    <button onclick="_s.button()">Continue</button>
-    <div class="err">Please adjust the slider before continuing.</div>
+    <button onclick="_s.button()">Continuar</button>
+<div class="err">Por favor, mové el control deslizable antes de continuar.</div>
+
+</div>
+
+    <!-- Demographic and language-background questionnaire slide -->
+<div class="slide" id="subj_info">
+  <div class="long_form">
+    <div class="subj_info_title">Información adicional</div>
+
+    <p class="info">
+      Estas preguntas nos ayudan a describir el grupo de participantes y decidir qué respuestas pueden incluirse
+      en el análisis final. Podés dejar preguntas sin responder, pero algunas respuestas son necesarias
+      para saber si tus datos corresponden con nuestro enfoque en el estudio.
+    </p>
+
+    <p>¿Leíste las instrucciones y creés que completaste la tarea correctamente?</p>
+    <label><input type="radio" name="assess" value="No"> No</label>
+    <label><input type="radio" name="assess" value="Yes"> Sí</label>
+    <label><input type="radio" name="assess" value="Confused"> Estuve confundido/a</label>
+
+    <p>¿Cuál es tu rango de edad?</p>
+    <select id="age_range">
+      <option value=""></option>
+      <option value="14-17">14–17</option>
+      <option value="18-24">18–24</option>
+      <option value="25-34">25–34</option>
+      <option value="35_or_older">35 o más</option>
+    </select>
+
+    <p>¿Cuál es tu primera lengua?</p>
+    <input type="text" id="first_language">
+
+    <p>¿Estás actualmente en Argentina?</p>
+    <select id="in_argentina">
+      <option value=""></option>
+      <option value="Yes">Sí</option>
+      <option value="No">No</option>
+    </select>
+
+    <p>¿Estudiás inglés actualmente?</p>
+    <select id="current_english_study">
+      <option value=""></option>
+      <option value="Yes">Sí</option>
+      <option value="No">No</option>
+    </select>
+
+    <p>¿Estudiaste inglés antes?</p>
+    <select id="previous_english_study">
+      <option value=""></option>
+      <option value="Yes">Sí</option>
+      <option value="No">No</option>
+    </select>
+
+    <p>¿Cómo describirías tu nivel de inglés?</p>
+    <select id="english_level">
+      <option value=""></option>
+      <option value="A1">A1</option>
+      <option value="A2">A2</option>
+      <option value="B1">B1</option>
+      <option value="B1+">B1+</option>
+      <option value="B2_or_higher">B2 o más alto</option>
+      <option value="Not_sure">No estoy seguro/a</option>
+    </select>
+
+    <p>¿En tu casa, alguna madre, padre, tutor/a o responsable legal usa inglés para comunicarse con vos en el día a día?</p>
+    <select id="english_at_home">
+      <option value=""></option>
+      <option value="Yes">Sí</option>
+      <option value="No">No</option>
+      <option value="Sometimes">A veces</option>
+    </select>
+
+   <p>Antes de este estudio, ¿te habían enseñado el orden de los adjetivos en inglés con varias categorías en detalle?</p>
+<select id="learned_adj_order">
+  <option value=""></option>
+  <option value="Yes_detailed">Sí, con varias categorías en detalle</option>
+  <option value="Only_basic">Solo de forma básica o con pocas categorías</option>
+  <option value="No">No</option>
+  <option value="Not_sure">No estoy seguro/a</option>
+</select>
+
+    <p>Si tenés algún comentario sobre este estudio, podés escribirlo acá:</p>
+    <textarea id="comments" rows="3" cols="50"></textarea>
+
+    <br><br>
+
+    <button onclick="_s.submit()">Enviar</button>
   </div>
+</div>
 
-    <!-- Demographic questionnaire slide -->
-  <div class="slide"  id="subj_info">
-    <div class="long_form">
-      <div class="subj_info_title">Additional information</div>
-      <p class="info">Answering these questions is optional, but will help us understand your answers.</p>
-      <p>Did you read the instructions and do you think you did the HIT correctly?</p>
-      <label><input type="radio"  name="assess" value="No"/>No</label>
-      <label><input type="radio"  name="assess" value="Yes"/>Yes</label>
-      <label><input type="radio"  name="assess" value="Confused"/>I was confused</label>
-
-      <p>Gender:
-        <select id="gender">
-          <label><option value=""/></label>
-          <label><option value="Male"/>Male</label>
-          <label><option value="Female"/>Female</label>
-          <label><option value="Other"/>Other</label>
-        </select>
-      </p>
-
-      <p>Age: <input type="text" id="age"/></p>
-
-      <p>Level Of Education:
-        <select id="education">
-          <label><option value="-1"/></label>
-          <label><option value="0"/>Some High School</label>
-          <label><option value="1"/>Graduated High School</label>
-          <label><option value="2"/>Some College</label>
-          <label><option value="3"/>Graduated College</label>
-          <label><option value="4"/>Hold a higher degree</label>
-        </select>
-      </p>
-
-      <p>Native Language: <input type="text" id="language"/></p>
-      <label>(the language(s) spoken at home when you were a child)</label>
-
-      <p>Did you enjoy the hit?</p>
-      <select id="enjoyment">
-        <label><option value="-1"></option></label>
-        <label><option value="0">Worse than the Average HIT</option></label>
-        <label><option value="1" >An Average HIT</option></label>
-        <label><option value="2">Better than average HIT</option></label>
-      </select>
-
-      <p>We would be interested in any comments you have about this experiment. Please type them here:</p>
-      <textarea id="comments" rows="3" cols="50"></textarea>
-      <br/>
-      <button onclick="_s.submit()">Submit</button>
-    </div>
-  </div>
-
-  <!-- Final than-you slide -->
-  <div id="thanks" class="slide js" >
-    <p  class="big">Thanks for your time!</p>
-  </div>
+ <!-- Final thank-you slide -->
+<div id="thanks" class="slide js" >
+  <p class="big">¡Gracias por tu tiempo!</p>
+</div>
 
   <!-- Progress bar -->
   <div class="progress">
-    <span>Progress:</span>
+    <span>Progreso:</span>
     <div class="bar-wrapper">
       <div class="bar" width="0%">
       </div>

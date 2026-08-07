@@ -47,6 +47,7 @@
     margin-bottom: 15px;
 }
 
+#video_err,
 #consent_err {
     display: none;
     color: red;
@@ -55,4 +56,26 @@
 
 .consent_box a {
     color: #0056b3;
+}
+
+.intro_centered {
+    text-align: center;
+}
+
+.intro_heading {
+    text-align: center;
+    font-weight: bold;
+}
+
+.intro_list {
+    width: 80%;
+    margin: 20px auto;
+    text-align: center;
+    list-style-position: inside;
+    font-weight: normal;
+    line-height: 1.6;
+}
+
+.intro_list li {
+    margin-bottom: 20px;
 }

@@ -159,22 +159,27 @@ slides.lesson_video = slide({
     },
   });
 
-  //Demographic information slide
-  slides.subj_info =  slide({
-    name : "subj_info",
-    submit : function(e){
-      exp.subj_data = {
-        language : $("#language").val(),
-        enjoyment : $("#enjoyment").val(),
-        assess : $('input[name="assess"]:checked').val(),
-        age : $("#age").val(),
-        gender : $("#gender").val(),
-        education : $("#education").val(),
-        comments : $("#comments").val(),
-      };
-      exp.go(); //use exp.go() if and only if there is no "present" data.
-    }
-  });
+  // Demographic and language-background slide
+slides.subj_info =  slide({
+  name : "subj_info",
+
+  submit : function(e){
+    exp.subj_data = {
+      assess : $('input[name="assess"]:checked').val(),
+      age_range : $("#age_range").val(),
+      first_language : $("#first_language").val(),
+      in_argentina : $("#in_argentina").val(),
+      current_english_study : $("#current_english_study").val(),
+      previous_english_study : $("#previous_english_study").val(),
+      english_level : $("#english_level").val(),
+      english_at_home : $("#english_at_home").val(),
+      learned_adj_order : $("#learned_adj_order").val(),
+      comments : $("#comments").val(),
+    };
+
+    exp.go();
+  }
+});
 
   //Final slide: collect and submit data
   slides.thanks = slide({
