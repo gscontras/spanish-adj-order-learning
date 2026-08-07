@@ -13,16 +13,63 @@ function make_slides(f) {
      }
   });
 
-  slides.lesson_video = slide({
-     name : "lesson_video",
-     start: function() {
-      // $(".movie").html("trad-movie.mp4");
-      document.getElementById("video_player").src = "expt-files/" + exp.video_condition + "-movie.mp4"
-     },
-     button : function() {
-      exp.go(); //use exp.go() if and only if there is no "present" data. - Meaning "Go to the next slide."
+  // Lesson video slide: randomly shows either the subjectivity or traditional video
+slides.lesson_video = slide({
+  name : "lesson_video",
+
+  start: function() {
+    exp.video_completed = false;
+    exp.max_video_time = 0;
+
+    var video = document.getElementById("video_player");
+
+    // Hide native video controls so participants cannot fast-forward using the control bar
+    video.removeAttribute("controls");
+
+    // Load the video selected by exp.video_condition: subj-movie.mp4 or trad-movie.mp4
+    video.src = "expt-files/" + exp.video_condition + "-movie.mp4";
+    video.currentTime = 0;
+    video.load();
+
+    $("#video_err").hide();
+    $("#video_continue_button").hide();
+    $("#play_video_button").show();
+
+    // Custom play button
+    $("#play_video_button").off("click").on("click", function() {
+      video.play();
+      $("#play_video_button").hide();
+    });
+
+    // Track the farthest point watched
+    video.ontimeupdate = function() {
+      if (video.currentTime > exp.max_video_time) {
+        exp.max_video_time = video.currentTime;
+      }
+    };
+
+    // Prevent skipping ahead, even if someone somehow tries to seek
+    video.onseeking = function() {
+      if (video.currentTime > exp.max_video_time + 0.5) {
+        video.currentTime = exp.max_video_time;
+      }
+    };
+
+    // Only allow the participant to continue after the video ends
+    video.onended = function() {
+      exp.video_completed = true;
+      $("#video_continue_button").show();
+    };
+  },
+
+  button : function() {
+    if (exp.video_completed) {
+      exp.go();
+    } else {
+      $("#video_err").show();
     }
-  });
+  }
+});
 
 
   //Instructions slide: moves to the next slide when Continue is clicked.
