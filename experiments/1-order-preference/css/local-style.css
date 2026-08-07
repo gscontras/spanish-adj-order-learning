@@ -21,3 +21,38 @@
 .long_form {
     padding-top: 20px;
 }
+
+.consent_contact {
+    text-align: center;
+}
+
+.consent_box {
+    max-width: 850px;
+    max-height: 500px;
+    overflow-y: scroll;
+    margin: 20px auto;
+    padding: 25px;
+    border: 1px solid #999;
+    text-align: left;
+    line-height: 1.4;
+}
+
+.consent_box h2,
+.consent_box h3,
+.consent_box .study_title {
+    text-align: center;
+}
+
+.consent_box li {
+    margin-bottom: 15px;
+}
+
+#consent_err {
+    display: none;
+    color: red;
+    margin-top: 15px;
+}
+
+.consent_box a {
+    color: #0056b3;
+}

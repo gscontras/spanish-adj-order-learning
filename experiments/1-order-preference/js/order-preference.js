@@ -13,6 +13,24 @@ function make_slides(f) {
      }
   });
 
+  // Consent slide: participant must check the box before continuing
+slides.consent = slide({
+  name : "consent",
+
+  start: function() {
+    $("#consent_err").hide();
+  },
+
+  button : function() {
+    if ($("#consent_yes").is(":checked")) {
+      exp.consent = "yes";
+      exp.go();
+    } else {
+      $("#consent_err").show();
+    }
+  }
+});
+
   // Lesson video slide: randomly shows either the subjectivity or traditional video
 slides.lesson_video = slide({
   name : "lesson_video",
@@ -166,7 +184,8 @@ slides.lesson_video = slide({
           "trials" : exp.data_trials,
           "catch_trials" : exp.catch_trials,
           "system" : exp.system,
-          "condition" : exp.video_condition,
+          "video_condition" : exp.video_condition,
+          "consent" : exp.consent,
           "subject_information" : exp.subj_data,
           "time_in_minutes" : (Date.now() - exp.startT)/60000
       };
@@ -196,7 +215,7 @@ function init() {
     };
 
   //Order of the experiment slides:
-  exp.structure=["i0", "lesson_video", "instructions1",'multi_slider', 'subj_info', 'thanks'];
+  exp.structure=['consent', "i0", "lesson_video", "instructions1",'multi_slider', 'subj_info', 'thanks'];
   
   exp.data_trials = [];
   
