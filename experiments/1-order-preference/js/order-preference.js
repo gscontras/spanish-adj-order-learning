@@ -138,11 +138,41 @@ slides.lesson_video = slide({
     $("#video_continue_button").hide();
     $("#play_video_button").show();
 
-    // Custom play button
-    $("#play_video_button").off("click").on("click", function() {
-      video.play();
-      $("#play_video_button").hide();
-    });
+    // Custom play/resume button
+    $("#play_video_button")
+      .text("Reproducir video")
+      .off("click")
+      .on("click", function() {
+    video.play();
+    $("#play_video_button").hide();
+  });
+
+    // Pause the video if the participant leaves the tab or window
+function pauseVideoIfInactive() {
+  if (!video.paused && !video.ended) {
+    video.pause();
+
+    $("#play_video_button")
+      .text("Reanudar video")
+      .show();
+  }
+}
+
+// Detect switching to another browser tab
+$(document)
+  .off("visibilitychange.lessonVideo")
+  .on("visibilitychange.lessonVideo", function() {
+    if (document.hidden) {
+      pauseVideoIfInactive();
+    }
+  });
+
+// Detect switching to another window/application
+$(window)
+  .off("blur.lessonVideo")
+  .on("blur.lessonVideo", function() {
+    pauseVideoIfInactive();
+  });
 
     // Track the farthest point watched
     video.ontimeupdate = function() {
