@@ -48,14 +48,19 @@
 }
 
 #video_err,
-#consent_err {
+#consent_err,
+#age_check_err,
+#guardian_err {
     display: none;
     color: red;
     margin-top: 15px;
 }
-
 .consent_box a {
     color: #0056b3;
+}
+
+#minor_consent_controls {
+    display: none;
 }
 
 .intro_centered {

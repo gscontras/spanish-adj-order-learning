@@ -48,6 +48,35 @@
 <body onload="init();">
   <noscript>This task requires JavaScript.</noscript>
 
+<!-- Age check slide -->
+<div class="slide" id="age_check">
+
+  <h3>Antes de comenzar</h3>
+
+  <p>¿Tenés 18 años o más?</p>
+
+  <label>
+    <input type="radio" name="age_check" value="adult">
+    Sí
+  </label>
+
+  <br><br>
+
+  <label>
+    <input type="radio" name="age_check" value="minor">
+    No
+  </label>
+
+  <br><br>
+
+  <button onclick="_s.button()">Continuar</button>
+
+  <div id="age_check_err" class="err">
+    Por favor, seleccioná una opción antes de continuar.
+  </div>
+
+</div>
+
 <!-- Consent and study information slide -->
 <div class="slide" id="consent">
 
@@ -76,7 +105,7 @@
   <a href="mailto:g.scontras@uci.edu">g.scontras@uci.edu</a>
 </p>
 
-<p class="consent_contact">
+<p class="consent_contact" id="minor_parent_note">
   <strong>
     En los casos en que se solicite autorización de madre, padre, tutor/a o responsable legal,
     las referencias dirigidas a “vos” se refieren a tu hijo/a.
@@ -237,6 +266,9 @@
 
   </div>
 
+  <!-- Adult consent controls -->
+<div id="adult_consent_controls">
+
   <p>
     <label>
       <input type="checkbox" id="consent_yes" value="yes">
@@ -244,11 +276,45 @@
     </label>
   </p>
 
-  <button onclick="_s.button()">Continuar</button>
+</div>
 
-  <div id="consent_err" class="err">
-    Por favor, marcá la casilla para confirmar que aceptás participar antes de continuar.
-  </div>
+
+<!-- Parent/guardian permission controls -->
+<div id="minor_consent_controls">
+
+  <p>
+    Si la persona participante es menor de 18 años, esta sección debe ser completada
+    por su madre, padre, tutor/a o responsable legal.
+  </p>
+
+  <p>
+    <label for="guardian_name">
+      Nombre completo de la madre, padre, tutor/a o responsable legal:
+    </label>
+  </p>
+
+  <input type="text" id="guardian_name">
+
+  <p>
+    <label>
+      <input type="checkbox" id="guardian_permission" value="yes">
+      Leí la información sobre el estudio y autorizo la participación del/de la menor.
+    </label>
+  </p>
+
+</div>
+
+
+<button onclick="_s.button()">Continuar</button>
+
+
+<div id="consent_err" class="err">
+  Por favor, marcá la casilla para confirmar que aceptás participar antes de continuar.
+</div>
+
+<div id="guardian_err" class="err">
+  Por favor, ingresá el nombre de la madre, padre, tutor/a o responsable legal y confirmá la autorización antes de continuar.
+</div>
 
 </div>
 

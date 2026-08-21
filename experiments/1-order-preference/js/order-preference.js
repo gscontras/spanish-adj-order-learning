@@ -13,20 +13,105 @@ function make_slides(f) {
      }
   });
 
+  // Age check slide: determines whether adult consent
+  // or parent/guardian permission should be shown
+  slides.age_check = slide({
+    name : "age_check",
+
+    start : function() {
+      $("#age_check_err").hide();
+      $('input[name="age_check"]').prop("checked", false);
+    },
+
+    button : function() {
+
+      var age_response = $('input[name="age_check"]:checked').val();
+
+      if (age_response) {
+
+        exp.age_group = age_response;
+
+        exp.go();
+
+      } else {
+
+        $("#age_check_err").show();
+
+      }
+    }
+  });
+
   // Consent slide: participant must check the box before continuing
 slides.consent = slide({
   name : "consent",
 
-  start: function() {
+  start : function() {
+
     $("#consent_err").hide();
+    $("#guardian_err").hide();
+
+    $("#consent_yes").prop("checked", false);
+    $("#guardian_permission").prop("checked", false);
+    $("#guardian_name").val("");
+
+
+    // Participant is 18 or older
+    if (exp.age_group === "adult") {
+
+      $("#minor_parent_note").hide();
+      $("#minor_consent_controls").hide();
+
+      $("#adult_consent_controls").show();
+
+
+    // Participant is under 18
+    } else if (exp.age_group === "minor") {
+
+      $("#minor_parent_note").show();
+      $("#adult_consent_controls").hide();
+
+      $("#minor_consent_controls").show();
+    }
   },
 
+
   button : function() {
-    if ($("#consent_yes").is(":checked")) {
-      exp.consent = "yes";
-      exp.go();
-    } else {
-      $("#consent_err").show();
+
+    // Adult consent
+    if (exp.age_group === "adult") {
+
+      if ($("#consent_yes").is(":checked")) {
+
+        exp.consent = "adult_consent";
+        exp.guardian_name = null;
+
+        exp.go();
+
+      } else {
+
+        $("#consent_err").show();
+      }
+
+
+    // Parent/guardian permission
+    } else if (exp.age_group === "minor") {
+
+      var guardian_name = $("#guardian_name").val().trim();
+
+      if (
+        guardian_name !== "" &&
+        $("#guardian_permission").is(":checked")
+      ) {
+
+        exp.consent = "guardian_permission";
+        exp.guardian_name = guardian_name;
+
+        exp.go();
+
+      } else {
+
+        $("#guardian_err").show();
+      }
     }
   }
 });
@@ -190,7 +275,9 @@ slides.subj_info =  slide({
           "catch_trials" : exp.catch_trials,
           "system" : exp.system,
           "video_condition" : exp.video_condition,
+          "age_group" : exp.age_group,
           "consent" : exp.consent,
+          "guardian_name" : exp.guardian_name,
           "subject_information" : exp.subj_data,
           "time_in_minutes" : (Date.now() - exp.startT)/60000
       };
@@ -220,7 +307,7 @@ function init() {
     };
 
   //Order of the experiment slides:
-  exp.structure=['consent', "i0", "lesson_video", "instructions1",'multi_slider', 'subj_info', 'thanks'];
+  exp.structure=['age_check', 'consent', "i0", "lesson_video", "instructions1", 'multi_slider', 'subj_info', 'thanks'];
   
   exp.data_trials = [];
   
