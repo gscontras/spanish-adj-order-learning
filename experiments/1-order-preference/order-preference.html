@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Learning adjective ordering in English</title>
 
     <!--JS-->
@@ -321,22 +322,31 @@
   <!-- Intro slide -->
 <div class="slide" id="i0" >
   <img src="../_shared/images/meaningLab.png" alt="UCI meaning lab" id="meaningLabLogo"></img>
-  <p id="cocolab">UCI meaning lab</p>
   <p class="intro_heading">En este estudio:</p>
 
 <ol class="intro_list">
   <li>
-    Vas a ver un video breve sobre cómo se ordenan los adjetivos en inglés.
-    El video es en inglés.
-  </li>
+  Vas a ver un video breve sobre cómo se ordenan los adjetivos en inglés.
+  <span class="intro_blue">El video es en inglés.</span>
+</li>
   <li>
     Luego, vas a completar una tarea con frases cortas en inglés en base al contenido del video.
   </li>
 </ol>
 
-<p class="intro_centered">La actividad te llevará aproximadamente 15 minutos.</p>
-<p class="intro_centered">Por favor, prestá atención.</p>
-<p class="intro_centered">¡Podés tomar notas!</p>
+<div class="intro_details">
+
+  <div class="intro_detail">
+    <span class="intro_detail_label">Duración</span>
+    <span>15 minutos</span>
+  </div>
+
+  <div class="intro_detail">
+    <span class="intro_detail_label">Importante</span>
+    <span>Prestá atención durante el video. Podés tomar notas.</span>
+  </div>
+
+</div>
 
 <button id="start_button" type="button">Comenzar</button>
 </div>
@@ -367,10 +377,12 @@
   <!-- Instructions slide -->
 <div class="slide" id="instructions1">
   <h3>Instrucciones</h3>
-  <p>
-    Vas a ver 26 pares de frases cortas en inglés.<br>
-    En cada caso, tu tarea es decidir cuál frase suena más natural en inglés en base a la explicación del video.
-  </p>
+  <p class="instructions_text">
+  Vas a ver <strong>26 pares de frases cortas en inglés.</strong><br><br>
+  En cada caso, tu tarea es decidir
+  <strong>cuál frase suena más natural en inglés</strong>
+  en base a la explicación del video.
+</p>
   <!-- <p class="instruction_condition">{{}}</p> -->
   <button onclick="_s.button()">Continuar</button>
 </div>
@@ -382,7 +394,11 @@
 
     <br>
 
-    <p>¿Cuál de estas dos frases con la palabra <span class="noun">{{}}</span> suena más natural en inglés?</p>
+   <p class="slider_question">
+  ¿Cuál de estas dos frases con la palabra
+  <span class="noun">{{}}</span>
+  suena más natural en inglés?
+</p>
 
     <table id="multi_slider_table" class="slider_table">
       <tr><td><span class="low">{{}}</span></td><td>
@@ -390,7 +406,9 @@
       </td><td><span class="high">{{}}</span></td></tr>
     </table>
 
-    <p>Deslizá el control de la barra para indicar tu preferencia.</p><br>
+    <p class="slider_instruction">
+  Deslizá el control de la barra para indicar tu preferencia.
+</p>
 
     <button onclick="_s.button()">Continuar</button>
 <div class="err">Por favor, mové el control deslizable antes de continuar.</div>
@@ -408,12 +426,16 @@
       para saber si tus datos corresponden con nuestro enfoque en el estudio.
     </p>
 
-    <p>¿Leíste las instrucciones y creés que completaste la tarea correctamente?</p>
+    <p class="required_note">
+  <span class="required">*</span> Respuesta requerida
+</p>
+
+    <p>¿Leíste las instrucciones y creés que completaste la tarea correctamente? <span class="required">*</span></p>
     <label><input type="radio" name="assess" value="No"> No</label>
     <label><input type="radio" name="assess" value="Yes"> Sí</label>
     <label><input type="radio" name="assess" value="Confused"> Estuve confundido/a</label>
 
-    <p>¿Cuál es tu rango de edad?</p>
+    <p>¿Cuál es tu rango de edad? <span class="required">*</span></p>
     <select id="age_range">
       <option value=""></option>
       <option value="14-17">14–17</option>
@@ -422,31 +444,31 @@
       <option value="35_or_older">35 o más</option>
     </select>
 
-    <p>¿Cuál es tu primera lengua?</p>
+    <p>¿Cuál es tu primera lengua? <span class="required">*</span></p>
     <input type="text" id="first_language">
 
-    <p>¿Estás actualmente en Argentina?</p>
+    <p>¿Estás actualmente en Argentina? <span class="required">*</span></p>
     <select id="in_argentina">
       <option value=""></option>
       <option value="Yes">Sí</option>
       <option value="No">No</option>
     </select>
 
-    <p>¿Estudiás inglés actualmente?</p>
+    <p>¿Estudiás inglés actualmente? <span class="required">*</span></p>
     <select id="current_english_study">
       <option value=""></option>
       <option value="Yes">Sí</option>
       <option value="No">No</option>
     </select>
 
-    <p>¿Estudiaste inglés antes?</p>
+    <p>¿Estudiaste inglés antes? <span class="required">*</span></p>
     <select id="previous_english_study">
       <option value=""></option>
       <option value="Yes">Sí</option>
       <option value="No">No</option>
     </select>
 
-    <p>¿Cómo describirías tu nivel de inglés?</p>
+    <p>¿Cómo describirías tu nivel de inglés? <span class="required">*</span></p>
     <select id="english_level">
       <option value=""></option>
       <option value="A1">A1</option>
@@ -479,8 +501,89 @@
 
     <br><br>
 
+  <div id="subj_info_err" class="err">
+  Por favor, respondé las preguntas requeridas antes de continuar.
+</div>
+
     <button onclick="_s.submit()">Enviar</button>
   </div>
+</div>
+
+<!-- Payment information slide -->
+<div class="slide" id="payment">
+
+  <h3>Información para recibir la compensación</h3>
+
+  <p class="payment_intro">
+  Para recibir la compensación de <strong>$5.000 ARS</strong>, ingresá una de las siguientes opciones.
+</p>
+
+<p class="payment_privacy">
+  Esta información se almacenará por separado de tus respuestas del estudio
+  y se eliminará después de que se procese el pago.
+</p>
+
+  <p class="payment_section_title">
+  Seleccioná el tipo de información que querés proporcionar:
+</p>
+
+  <div class="payment_methods">
+
+  <label>
+    <input type="radio" name="payment_method" value="mercado_pago_alias">
+    Alias de Mercado Pago
+  </label>
+
+  <label>
+    <input type="radio" name="payment_method" value="cvu">
+    CVU de Mercado Pago
+  </label>
+
+  <label>
+    <input type="radio" name="payment_method" value="bank_alias">
+    Alias bancario
+  </label>
+
+</div>
+
+  <label for="payment_identifier" class="payment_field_label">
+  Ingresá el alias o CVU
+</label>
+
+  <input type="text" id="payment_identifier">
+
+  <br><br>
+
+  <button id="payment_continue_button" onclick="_s.button()">Continuar</button>
+
+  <div id="payment_err" class="err">
+  Por favor, seleccioná una opción e ingresá la información necesaria para recibir la compensación.
+</div>
+
+<div id="payment_confirmation" style="display:none;">
+
+  <h4>Revisá la información antes de continuar</h4>
+
+  <p>
+    Tipo: <strong><span id="confirm_payment_method"></span></strong>
+  </p>
+
+  <p>
+    Ingresaste: <strong><span id="confirm_payment_identifier"></span></strong>
+  </p>
+
+  <p>¿Esta información es correcta?</p>
+
+  <button type="button" id="confirm_payment_button">
+    Sí, confirmar y continuar
+  </button>
+
+  <button type="button" id="edit_payment_button">
+    Corregir
+  </button>
+
+</div>
+
 </div>
 
  <!-- Final thank-you slide -->
@@ -492,8 +595,7 @@
   <div class="progress">
     <span>Progreso:</span>
     <div class="bar-wrapper">
-      <div class="bar" width="0%">
-      </div>
+      <div class="bar" style="width: 0%;"></div>
     </div>
   </div>
 

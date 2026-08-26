@@ -275,24 +275,134 @@ $(window)
   });
 
   // Demographic and language-background slide
-slides.subj_info =  slide({
+slides.subj_info = slide({
   name : "subj_info",
 
-  submit : function(e){
+  start : function() {
+    $("#subj_info_err").hide();
+  },
+
+  submit : function(e) {
+
+    var assess = $('input[name="assess"]:checked').val();
+    var age_range = $("#age_range").val();
+    var first_language = $("#first_language").val().trim();
+    var in_argentina = $("#in_argentina").val();
+    var current_english_study = $("#current_english_study").val();
+    var previous_english_study = $("#previous_english_study").val();
+    var english_level = $("#english_level").val();
+
+    // Do not continue if a required response is missing
+    if (
+      !assess ||
+      !age_range ||
+      first_language === "" ||
+      !in_argentina ||
+      !current_english_study ||
+      !previous_english_study ||
+      !english_level
+    ) {
+      $("#subj_info_err").show();
+      return;
+    }
+
+    $("#subj_info_err").hide();
+
     exp.subj_data = {
-      assess : $('input[name="assess"]:checked').val(),
-      age_range : $("#age_range").val(),
-      first_language : $("#first_language").val(),
-      in_argentina : $("#in_argentina").val(),
-      current_english_study : $("#current_english_study").val(),
-      previous_english_study : $("#previous_english_study").val(),
-      english_level : $("#english_level").val(),
+      assess : assess,
+      age_range : age_range,
+      first_language : first_language,
+      in_argentina : in_argentina,
+      current_english_study : current_english_study,
+      previous_english_study : previous_english_study,
+      english_level : english_level,
       english_at_home : $("#english_at_home").val(),
       learned_adj_order : $("#learned_adj_order").val(),
-      comments : $("#comments").val(),
+      comments : $("#comments").val()
     };
 
     exp.go();
+  }
+});
+
+  // Payment information slide
+slides.payment = slide({
+  name : "payment",
+
+  start : function() {
+
+    $("#payment_err").hide();
+    $("#payment_confirmation").hide();
+    $("#payment_continue_button").show();
+
+    $('input[name="payment_method"]').prop("checked", false);
+    $("#payment_identifier").val("");
+  },
+
+  button : function() {
+
+    var payment_method =
+      $('input[name="payment_method"]:checked').val();
+
+    var payment_identifier =
+      $("#payment_identifier").val().trim();
+
+    // Require both payment type and alias/CVU
+    if (!payment_method || payment_identifier === "") {
+
+      $("#payment_err").show();
+      return;
+    }
+
+    $("#payment_err").hide();
+
+    // Create a participant-friendly label
+    var payment_method_label = "";
+
+    if (payment_method === "mercado_pago_alias") {
+      payment_method_label = "Alias de Mercado Pago";
+
+    } else if (payment_method === "cvu") {
+      payment_method_label = "CVU";
+
+    } else if (payment_method === "bank_alias") {
+      payment_method_label = "Alias bancario de un banco de Argentina";
+    }
+
+    // Show what they entered
+    $("#confirm_payment_method").text(payment_method_label);
+    $("#confirm_payment_identifier").text(payment_identifier);
+
+    // Hide original Continue button and show confirmation
+    $("#payment_continue_button").hide();
+    $("#payment_confirmation").show();
+
+
+    // Participant confirms
+    $("#confirm_payment_button")
+      .off("click")
+      .on("click", function() {
+
+        exp.payment_data = {
+          payment_method : payment_method,
+          payment_identifier : payment_identifier
+        };
+
+        exp.go();
+      });
+
+
+    // Participant wants to correct it
+    $("#edit_payment_button")
+      .off("click")
+      .on("click", function() {
+
+        $("#payment_confirmation").hide();
+        $("#payment_continue_button").show();
+
+        // Put cursor back in the field
+        $("#payment_identifier").focus();
+      });
   }
 });
 
@@ -300,6 +410,11 @@ slides.subj_info =  slide({
   slides.thanks = slide({
     name : "thanks",
     start : function() {
+
+      setTimeout(function() {
+        $(".bar").css("width", "100%");
+      }, 0);
+
       exp.data= {
           "trials" : exp.data_trials,
           "catch_trials" : exp.catch_trials,
@@ -337,7 +452,17 @@ function init() {
     };
 
   //Order of the experiment slides:
-  exp.structure=['age_check', 'consent', "i0", "lesson_video", "instructions1", 'multi_slider', 'subj_info', 'thanks'];
+  exp.structure=[
+  'age_check',
+  'consent',
+  'i0',
+  'lesson_video',
+  'instructions1',
+  'multi_slider',
+  'subj_info',
+  'payment',
+  'thanks'
+];
   
   exp.data_trials = [];
   
