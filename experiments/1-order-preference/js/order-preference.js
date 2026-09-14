@@ -294,7 +294,6 @@ slides.subj_info = slide({
 
     // Do not continue if a required response is missing
     if (
-      !assess ||
       !age_range ||
       first_language === "" ||
       !in_argentina ||
@@ -378,18 +377,57 @@ slides.payment = slide({
     $("#payment_confirmation").show();
 
 
-    // Participant confirms
-    $("#confirm_payment_button")
-      .off("click")
-      .on("click", function() {
+    // Participant confirms: send payment information separately by email
+$("#confirm_payment_button")
+  .off("click")
+  .on("click", function() {
 
-        exp.payment_data = {
-          payment_method : payment_method,
-          payment_identifier : payment_identifier
-        };
+    var confirmButton = $(this);
 
-        exp.go();
-      });
+    confirmButton
+      .prop("disabled", true)
+      .text("Enviando...");
+
+    fetch("send-payment.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        payment_method: payment_method,
+        payment_identifier: payment_identifier
+      })
+    })
+    .then(function(response) {
+      if (!response.ok) {
+        throw new Error("Payment email could not be sent.");
+      }
+      return response.json();
+    })
+    .then(function(result) {
+
+      if (!result.success) {
+        throw new Error("Payment email could not be sent.");
+      }
+
+      // Payment information was sent separately.
+      // Continue to the thanks slide, where research data are submitted.
+      exp.go();
+    })
+    .catch(function(error) {
+
+      confirmButton
+        .prop("disabled", false)
+        .text("Sí, confirmar y continuar");
+
+      alert(
+        "No pudimos enviar la información de pago. " +
+        "Por favor, intentá nuevamente."
+      );
+
+      console.error(error);
+    });
+  });
 
 
     // Participant wants to correct it

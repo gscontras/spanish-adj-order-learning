@@ -507,6 +507,21 @@ textarea:focus {
 
 @media (max-width: 700px) {
 
+#subj_info {
+    width: calc(100% - 12px) !important;
+    max-width: none !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    box-sizing: border-box !important;
+}
+
+#subj_info .long_form {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 auto !important;
+    padding: 20px 0 0 !important;
+    box-sizing: border-box !important;
+}
     .progress {
     position: absolute !important;
     top: 18px !important;
