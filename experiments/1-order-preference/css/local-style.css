@@ -507,21 +507,40 @@ textarea:focus {
 
 @media (max-width: 700px) {
 
-#subj_info {
-    width: calc(100% - 12px) !important;
-    max-width: none !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-    box-sizing: border-box !important;
-}
+    /* your progress rules stay here */
 
-#subj_info .long_form {
-    width: 100% !important;
-    max-width: none !important;
-    margin: 0 auto !important;
-    padding: 20px 0 0 !important;
-    box-sizing: border-box !important;
-}
+    .slide {
+        width: calc(100% - 12px);
+        margin: 78px auto 10px;
+        padding: 26px 16px 32px;
+    }
+
+    #subj_info .long_form {
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+        padding: 20px 0 0;
+        box-sizing: border-box;
+    }
+
+    #subj_info input[type="text"],
+    #subj_info select,
+    #subj_info textarea {
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    #comments {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* rest of your existing mobile rules */
+
     .progress {
     position: absolute !important;
     top: 18px !important;
@@ -585,12 +604,6 @@ textarea:focus {
 .progress > .bar-wrapper > .bar {
     height: 100% !important;
 }
-
-    .slide {
-    width: calc(100% - 12px);
-    margin: 78px auto 10px;
-    padding: 26px 16px 32px;
-    }
 
     #multi_slider {
     width: calc(100% - 12px);
