@@ -1,41 +1,56 @@
 import pandas as pd
 import json
 
-def convert_json_to_df(trials_json):
-    
-    df = pd.DataFrame(trials_json['trials'])
 
-    for key in trials_json['subject_information'].keys():
-        df[key] = trials_json['subject_information'][key]
+def convert_json_to_df(participant_data):
 
-    for key in trials_json['system'].keys():
-        df[key] = trials_json['system'][key]
+    # Convert trials into a DataFrame
+    df = pd.DataFrame(participant_data['trials'])
 
-    df['time_in_minutes'] = trials_json['time_in_minutes']
-    # df['workerID'] = trials_json['workerID']
-    
+    # Add subject information to every trial
+    for key, value in participant_data.get('subject_information', {}).items():
+        df[key] = value
+
+    # Add system information to every trial
+    for key, value in participant_data.get('system', {}).items():
+        df[key] = value
+
+    # Add other participant-level information
+    df['video_condition'] = participant_data.get('video_condition')
+    df['age_group'] = participant_data.get('age_group')
+    df['consent'] = participant_data.get('consent')
+    df['guardian_name'] = participant_data.get('guardian_name')
+    df['time_in_minutes'] = participant_data.get('time_in_minutes')
+
     return df
 
-#load data and name it json_trials
-with open('new_map_data.json') as json_file:
-    
-    # add "[" as first element, remove last comma from end of string, then add "]" to end of string
-    # json_file is an _io.textiowrapper object and the .read() method is converting it to a string
-    json_file_string = '[' + json_file.read()[:-1] + ']'
 
-    # json.loads expects a string as an iput 
+# Load JSON data
+with open('new_map_data.json') as json_file:
+
+    # The experiment saves a series of JSON objects separated by commas,
+    # rather than a single JSON array.
+    json_file_string = '[' + json_file.read().rstrip(',\n') + ']'
+
     json_trials = json.loads(json_file_string)
 
-df_trials = pd.DataFrame() #this creates an empty dataframe
-participant_id = 1
-for x in json_trials:
-  df_ = convert_json_to_df(x)
-  df_['participant_id'] = participant_id
 
-  df_trials = pd.concat([df_trials, df_], sort=False)
+# Convert all participants
+participant_dfs = []
 
-  participant_id += 1
+for participant_id, participant_data in enumerate(json_trials, start=1):
 
-df_trials.to_csv("results.csv")
+    df = convert_json_to_df(participant_data)
 
-# print(json_trials)
+    # Add participant ID to every trial
+    df['participant_id'] = participant_id
+
+    participant_dfs.append(df)
+
+
+# Combine all participants
+df_trials = pd.concat(participant_dfs, ignore_index=True, sort=False)
+
+
+# Save CSV
+df_trials.to_csv('results.csv', index=False)
