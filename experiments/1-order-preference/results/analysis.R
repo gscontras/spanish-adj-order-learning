@@ -18,12 +18,12 @@ d <- df
 d = d[d$first_language!="Greg",]
 
 # number of participants
-length(unique(d$participant_id)) # n=61
+length(unique(d$participant_id)) # n=62
 
 # breakdown of data by condition
 table(d$video_condition)
 # subj trad 
-# 988  598 
+# 988  624
 
 
 #####
@@ -48,7 +48,7 @@ agr$response = NULL
 agr$rightresponse = NULL
 agr$class1 = NULL
 agr$class2 = NULL
-nrow(agr) #3172
+nrow(agr) #3224
 #write.csv(agr,"~/git/cross-linguistic_adjective_ordering/italian/experiments/2-order-preference-all-orders/results/naturalness-duplicated.csv")
 
 # calculate mean distance by adjective and condition
@@ -112,10 +112,10 @@ boot.ci(results, type="bca")
 # trad
 trad = adj_agr[adj_agr$video_condition=="trad",]
 gof(trad$correctresponse,trad$subjectivity)
-# r = 0.89, r2 = 0.72
+# r = 0.91, r2 = 0.75
 results <- boot(data=trad, statistic=rsq, R=10000, formula=correctresponse~subjectivity)
 boot.ci(results, type="bca") 
-# 95%   ( 0.5643,  0.9011 ) 
+# 95%   ( 0.6394,  0.9296 )  
 
 
 
