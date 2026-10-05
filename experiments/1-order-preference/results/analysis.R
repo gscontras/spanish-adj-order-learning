@@ -8,27 +8,39 @@ library(hydroGOF)
 library(dplyr)
 #library(tidyr)
 
-# read data
+# read and process data ---- 
+
+# load CSV file
 df = read.csv("results.csv",header=T)
 head(df)
 
 d <- df
 
-# only native Italian speakers
+# only native Spanish speakers (0 excluded)
 d = d[d$first_language!="Greg",]
 
+# consider exclusion criteria
+
+# only people in Argentina (0 exlcuded)
+d = d[d$in_argentina=="Yes",]
+
+# no A1 level (7 excluded)
+d = d[d$english_level!="A1",]
+
+# have not had detailed instruction 
+# on adjective order (9 excluded)
+d = d[d$learned_adj_order!="Yes_detailed",]
+
+
 # number of participants
-length(unique(d$participant_id)) # n=62
+length(unique(d$participant_id)) # n=46 (from 62)
 
 # breakdown of data by condition
 table(d$video_condition)
 # subj trad 
-# 988  624
+# 832  364
 
-
-#####
-## duplicate observations by first predicate
-#####
+# duplicate observations by first predicate ---- 
 
 library(tidyr)
 
@@ -54,6 +66,8 @@ nrow(agr) #3224
 # calculate mean distance by adjective and condition
 adj_agr = aggregate(correctresponse~predicate*correctclass*video_condition,FUN=mean,data=agr)
 
+# class analysis ----
+
 # calculate mean distance by adjective class and condition
 source("helpers.R")
 class_agr = bootsSummary(data=agr , measurevar="correctresponse", groupvars=c("correctclass","video_condition"))
@@ -76,7 +90,7 @@ ggplot(data=class_agr,aes(x=factor(correctclass,level=level_order),y=correctresp
 #ggsave("class_distance.png",height=2.75,width=5.5)
 
 
-# subjectivity analysis
+# subjectivity analysis ----
 
 # load subjectivity data from Scontras et al. 2017
 s = read.csv("subjectivity-aggregate-from-OpenMind.csv",header=T)
@@ -98,8 +112,7 @@ ggplot(adj_agr, aes(x=subjectivity,y=correctresponse)) +
   facet_grid(.~video_condition)
 #ggsave("../results/subjectivity-scatter.png",height=2.75,width=5.5)
 
-
-# calculate correlations and bootstrap confidence intervals
+## calculate correlations and bootstrap confidence intervals ----
 
 # subj
 subj = adj_agr[adj_agr$video_condition=="subj",]
@@ -118,4 +131,53 @@ boot.ci(results, type="bca")
 # 95%   ( 0.6394,  0.9296 )  
 
 
+# compare with English baseline from Scontras et al. 2017 ----
+
+e = read.csv("english-baseline-ordering-preferences.csv",header=T)
+
+# add baseline information to current results
+adj_agr$baseline = e$correctresponse[match(adj_agr$predicate,e$predicate)]
+
+## calculate correlations and bootstrap confidence intervals ----
+
+# subj
+subj = adj_agr[adj_agr$video_condition=="subj",]
+gof(subj$correctresponse,subj$baseline)
+# r = 0.89, r2 = 0.74
+results <- boot(data=subj, statistic=rsq, R=10000, formula=correctresponse~baseline)
+boot.ci(results, type="bca") 
+# 95%   ( 0.6668,  0.8775 )   
+
+# trad
+trad = adj_agr[adj_agr$video_condition=="trad",]
+gof(trad$correctresponse,trad$baseline)
+# r = 0.89, r2 = 0.73
+results <- boot(data=trad, statistic=rsq, R=10000, formula=correctresponse~baseline)
+boot.ci(results, type="bca") 
+# 95%   ( 0.6242,  0.8802 )   
+
+# plot preferred distance against baseline
+ggplot(adj_agr, aes(x=baseline,y=correctresponse)) +
+  geom_point() +
+  #geom_smooth()+
+  stat_smooth(method="lm",color="black")+
+  #geom_text(aes(label=predicate),size=2.5,vjust=1.5)+
+  ylab("preference\nfor first position\n")+
+  xlab("\nEnglish basline")+
+  ylim(0,1)+
+  #xlim(0,1)+
+  theme_bw() +
+  facet_grid(.~video_condition)
+#ggsave("../results/baseline-comparison.png",height=2.75,width=5.5)
+
+## trial-level analysis ----
+
+# add baseline information to current results
+agr$baseline = e$correctresponse[match(agr$predicate,e$predicate)]
+
+agr$baseline_distance = agr$correctresponse - agr$baseline
+
+summary(lmer(baseline_distance ~ video_condition * correctclass  
+                       + (1 | participant_id)
+                       + (1 | noun), data = agr))
 
