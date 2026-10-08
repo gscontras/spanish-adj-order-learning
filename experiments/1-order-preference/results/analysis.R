@@ -7,6 +7,7 @@ library(lme4)
 library(hydroGOF)
 library(dplyr)
 #library(tidyr)
+library(emmeans)
 
 # read and process data ---- 
 
@@ -175,9 +176,51 @@ ggplot(adj_agr, aes(x=baseline,y=correctresponse)) +
 # add baseline information to current results
 agr$baseline = e$correctresponse[match(agr$predicate,e$predicate)]
 
-agr$baseline_distance = agr$correctresponse - agr$baseline
+### absolute distance analysis ----
+agr$baseline_distance_abs = abs(agr$correctresponse - agr$baseline)
 
-summary(lmer(baseline_distance ~ video_condition * correctclass  
+m_abs = lmer(baseline_distance_abs ~ video_condition * correctclass  
                        + (1 | participant_id)
-                       + (1 | noun), data = agr))
+                       + (1 | noun), data = agr)
+summary(m_abs)
 
+emmeans(m_abs, pairwise ~ video_condition | correctclass)
+
+
+### directional distance analysis ----
+agr$baseline_distance_dir = agr$correctresponse - agr$baseline
+
+m_dir = lmer(baseline_distance_dir ~ video_condition * correctclass  
+           + (1 | participant_id)
+           + (1 | noun), data = agr)
+summary(m_dir)
+
+emmeans(m_dir, pairwise ~ video_condition | correctclass)
+
+# whether taught analysis ----
+
+agr$traditional_taught <- ifelse(
+  agr$correctclass %in% c("shape", "texture"),
+  "no",
+  "yes"
+)
+
+agr$traditional_taught <- factor(
+  agr$traditional_taught,
+  levels = c("yes", "no")
+)
+
+m_abs_taught = lmer(baseline_distance_abs ~ video_condition * traditional_taught  
+             + (1 | participant_id)
+             + (1 | noun), data = agr)
+summary(m_abs_taught)
+
+m_dir_taught = lmer(baseline_distance_dir ~ video_condition * traditional_taught  
+                    + (1 | participant_id)
+                    + (1 | noun), data = agr)
+summary(m_dir_taught)
+
+emmeans(
+  m_dir_taught,
+  pairwise ~ video_condition | traditional_taught
+)
