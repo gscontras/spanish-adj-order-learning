@@ -20,12 +20,21 @@ d <- df
 # only native Spanish speakers (0 excluded)
 d = d[d$first_language!="Greg",]
 
+# exclude repeat tries from the same participant on the basis of payment information (14 excluded)
+d = d[d$participant_id!=10&d$participant_id!=28&
+        d$participant_id!=29&d$participant_id!=59&
+        d$participant_id!=60&d$participant_id!=61&
+        d$participant_id!=62&d$participant_id!=42&
+        d$participant_id!=58&d$participant_id!=35&
+        d$participant_id!=47&d$participant_id!=39&
+        d$participant_id!=52&d$participant_id!=38,]
+
 # consider exclusion criteria
 
 # only people in Argentina (0 exlcuded)
 d = d[d$in_argentina=="Yes",]
 
-# no A1 level (7 excluded)
+# no A1 level (6 excluded)
 d = d[d$english_level!="A1",]
 
 # have not had detailed instruction 
@@ -34,12 +43,12 @@ d = d[d$learned_adj_order!="Yes_detailed",]
 
 
 # number of participants
-length(unique(d$participant_id)) # n=46 (from 62)
+length(unique(d$participant_id)) # n=33 (from 62)
 
 # breakdown of data by condition
 table(d$video_condition)
 # subj trad 
-# 832  364
+# 572  286
 
 # duplicate observations by first predicate ---- 
 
@@ -162,7 +171,7 @@ ggplot(adj_agr, aes(x=baseline,y=correctresponse)) +
   geom_point() +
   #geom_smooth()+
   stat_smooth(method="lm",color="black")+
-  #geom_text(aes(label=predicate),size=2.5,vjust=1.5)+
+  geom_text(aes(label=predicate),size=2.5,vjust=1.5)+
   ylab("preference\nfor first position\n")+
   xlab("\nEnglish basline")+
   ylim(0,1)+
