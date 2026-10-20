@@ -31,6 +31,9 @@ d = d[d$participant_id!=10&d$participant_id!=28&
 
 # consider exclusion criteria
 
+# must have taken at least eight minutes (2 people excluded)
+d = d[d$time_in_minutes>8,]
+
 # only people in Argentina (0 exlcuded)
 d = d[d$in_argentina=="Yes",]
 
@@ -43,12 +46,12 @@ d = d[d$learned_adj_order!="Yes_detailed",]
 
 
 # number of participants
-length(unique(d$participant_id)) # n=33 (from 62)
+length(unique(d$participant_id)) # n=31 (from 62)
 
 # breakdown of data by condition
 table(d$video_condition)
 # subj trad 
-# 572  286
+# 546   260
 
 # duplicate observations by first predicate ---- 
 
@@ -70,7 +73,7 @@ agr$response = NULL
 agr$rightresponse = NULL
 agr$class1 = NULL
 agr$class2 = NULL
-nrow(agr) #3224
+nrow(agr) #1612
 #write.csv(agr,"~/git/cross-linguistic_adjective_ordering/italian/experiments/2-order-preference-all-orders/results/naturalness-duplicated.csv")
 
 # calculate mean distance by adjective and condition
@@ -233,3 +236,4 @@ emmeans(
   m_dir_taught,
   pairwise ~ video_condition | traditional_taught
 )
+
